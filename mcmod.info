@@ -1,0 +1,9 @@
+[{
+    "modid": "battlelog",
+    "name": "BattleLog",
+    "version": "1.0.0",
+    "description": "CombatLog port for Sponge",
+    "authorList": [
+        "MrOnlineCoder"
+    ]
+}]
