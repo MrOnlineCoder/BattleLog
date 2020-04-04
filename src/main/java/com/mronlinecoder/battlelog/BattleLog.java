@@ -108,7 +108,7 @@ public class BattleLog {
 		     if(config.actionbar){
 				 Optional<Player> pl = Sponge.getServer().getPlayer(entry.getKey());
 				 pl.ifPresent(player ->{
-					 player.sendMessages(ChatTypes.ACTION_BAR, Text.of(TextColors.DARK_RED, locale.tr("battle_actionbar").replace("%s", String.valueOf(entry.getValue()-1))));
+					 player.sendMessages(ChatTypes.ACTION_BAR, Text.of(TextColors.DARK_RED, locale.tr("battle_actionbar").replace("%", String.valueOf(entry.getValue()-1))));
 				 });
 			 }
 
