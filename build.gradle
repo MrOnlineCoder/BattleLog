@@ -6,6 +6,10 @@ group = 'com.mronlinecoder.battlelog'
 version = '1.0-SNAPSHOT'
 description = 'CombatLog port to Sponge.'
 
+apply plugin: 'java'
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
 
 repositories {
     jcenter()
