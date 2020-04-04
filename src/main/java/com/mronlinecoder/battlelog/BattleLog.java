@@ -1,16 +1,11 @@
 package com.mronlinecoder.battlelog;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-
-import javax.inject.Inject;
-
+import com.mronlinecoder.battlelog.lang.BattleLocale;
+import com.mronlinecoder.battlelog.lang.LocaleEN;
 import com.mronlinecoder.battlelog.lang.LocaleFR;
+import com.mronlinecoder.battlelog.lang.LocaleRU;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.spec.CommandSpec;
@@ -29,16 +24,13 @@ import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.chat.ChatType;
 import org.spongepowered.api.text.chat.ChatTypes;
 import org.spongepowered.api.text.format.TextColors;
 
-import com.mronlinecoder.battlelog.lang.BattleLocale;
-import com.mronlinecoder.battlelog.lang.LocaleEN;
-import com.mronlinecoder.battlelog.lang.LocaleRU;
-
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.loader.ConfigurationLoader;
+import javax.inject.Inject;
+import java.io.File;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Plugin( id = "battlelog", name = "BattleLog", version = "1.0")
 public class BattleLog {

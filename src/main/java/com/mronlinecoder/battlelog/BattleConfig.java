@@ -1,15 +1,14 @@
 package com.mronlinecoder.battlelog;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 public class BattleConfig {
 	private ConfigurationLoader<CommentedConfigurationNode> configLoader;
