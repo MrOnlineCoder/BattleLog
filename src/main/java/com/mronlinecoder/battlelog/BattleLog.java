@@ -180,11 +180,13 @@ public class BattleLog {
 		}
 		pl.getInventory().clear();
 
-		String cmd = config.getPunishCommand();
-		if (cmd.length() == 0) return;
-		cmd = cmd.replaceAll("%", pl.getName());
-		
-		Sponge.getCommandManager().process(Sponge.getServer().getConsole(), cmd);
+
+		config.getPunishCommand().forEach(cmd ->{
+			if (cmd.length() == 0) return;
+			cmd = cmd.replaceAll("%", pl.getName());
+			Sponge.getCommandManager().process(Sponge.getServer().getConsole(), cmd);
+		});
+
 	}
 	
 	public Logger getLogger() {

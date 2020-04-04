@@ -1,14 +1,11 @@
 package com.mronlinecoder.battlelog;
 
-import org.spongepowered.api.data.key.Keys;
-import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.EntityTypes;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.cause.entity.damage.source.EntityDamageSource;
 import org.spongepowered.api.event.command.SendCommandEvent;
 import org.spongepowered.api.event.entity.DamageEntityEvent;
-import org.spongepowered.api.event.entity.SpawnEntityEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
@@ -22,8 +19,7 @@ public class BattleListener {
 	
 	@Listener
 	public void onDamage(DamageEntityEvent ev) {
-		if (ev.isCancelled()) return;
-		
+
 		if (ev.getTargetEntity().getType() != EntityTypes.PLAYER) {
 			return;
 		}
@@ -47,8 +43,7 @@ public class BattleListener {
 	
 	@Listener
 	public void onCmd(SendCommandEvent ev) {
-		if (ev.isCancelled()) return;
-		
+
 		if (!(ev.getSource() instanceof Player)) return;
 		
 		Player pl = (Player) ev.getSource();
@@ -64,7 +59,7 @@ public class BattleListener {
 	@Listener
 	public void onJoin(ClientConnectionEvent.Join ev) {
 
-		Player pl = (Player) ev.getTargetEntity();
+		Player pl = ev.getTargetEntity();
 		
 		if (plugin.dead.contains(pl.getName())) {
 			plugin.dead.remove(pl.getName());
