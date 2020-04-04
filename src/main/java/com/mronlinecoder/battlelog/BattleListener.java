@@ -49,6 +49,9 @@ public class BattleListener {
 		Player pl = (Player) ev.getSource();
 		
 		if (ev.getCommand().equalsIgnoreCase("bl") || ev.getCommand().equalsIgnoreCase("battlelog")) return;
+		if(plugin.config.whitelistedCommands.contains(ev.getCommand()) && !plugin.getConfig().blacklist
+		|| !plugin.config.whitelistedCommands.contains(ev.getCommand()) && plugin.getConfig().blacklist)
+			return;
 		
 		if (plugin.fighters.get(pl.getName()) != null) {
 			ev.setCancelled(true);

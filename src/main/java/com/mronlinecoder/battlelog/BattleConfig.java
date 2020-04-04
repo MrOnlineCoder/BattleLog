@@ -19,6 +19,8 @@ public class BattleConfig {
 	int time;
 	String lang;
 	List<String> punishCmds;
+	List<String> whitelistedCommands;
+	boolean blacklist;
 	boolean actionbar;
 
 	public BattleConfig(BattleLog pl) {
@@ -36,6 +38,8 @@ public class BattleConfig {
 				config.getNode("lang").setComment("Plugin locale (possible values: EN, RU, FR)").setValue("EN");
 				config.getNode("actionbar").setComment("Enable combat actionbar").setValue(true);
 				config.getNode("punishCmds").setComment("Punish commands to be executed. Leave empty to disable. Use % sign as placeholder for player name").setValue(Collections.singletonList(""));
+				config.getNode("whitelisted-commands").setComment("Whitelisted commands in combat mode").setValue(Collections.emptyList());
+				config.getNode("whitelist-is-blacklist").setComment("Whitelisted commands in combat mode").setValue(false);
 				saveConfig();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -78,10 +82,12 @@ public class BattleConfig {
 		lang = config.getNode("lang").getString();
 		try {
 			punishCmds = config.getNode("punishCmd").getList(TypeToken.of(String.class));
+			whitelistedCommands = config.getNode("whitelisted-commands").getList(TypeToken.of(String.class));
 		} catch (ObjectMappingException e) {
 			e.printStackTrace();
 		}
 		actionbar = config.getNode("actionbar").getBoolean();
+		blacklist = config.getNode("whitelist-is-blacklist").getBoolean();
 	}
 
 	public void loadConfig() {
