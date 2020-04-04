@@ -8,5 +8,6 @@ public class LocaleRU extends BattleLocale {
 		add("battle_info_true", "Вы будете в бою еще % сек.");
 		add("battle_cmd_deny", "Команды отключены во время боя!");
 		add("battle_punish", "Вы были наказаны за побег с поля боя!");
+		add("battle_actionbar", "Боевой режим: % секунд осталось");
 	}
 }

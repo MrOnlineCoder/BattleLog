@@ -15,6 +15,7 @@ public class BattleConfig {
 	int time;
 	String lang;
 	String punishCmd;
+	boolean actionbar;
 
 	public BattleConfig(BattleLog pl) {
 		this.plugin = pl;
@@ -28,7 +29,8 @@ public class BattleConfig {
 				configFile.createNewFile();
 				loadConfig();
 				config.getNode("time").setComment("Duration of the battle (in seconds)").setValue(10);
-				config.getNode("lang").setComment("Plugin locale (possible values: EN, RU)").setValue("EN");
+				config.getNode("lang").setComment("Plugin locale (possible values: EN, RU, FR)").setValue("EN");
+				config.getNode("actionbar").setComment("Enable combat actionbar").setValue(true);
 				config.getNode("punishCmd").setComment("Punish command to be executed. Leave empty to disable. Use % sign as placeholder for player name").setValue("");
 				saveConfig();
 			} catch (IOException e) {
@@ -71,6 +73,7 @@ public class BattleConfig {
 		time = config.getNode("time").getInt();
 		lang = config.getNode("lang").getString();
 		punishCmd = config.getNode("punishCmd").getString();
+		actionbar = config.getNode("actionbar").getBoolean();
 	}
 
 	public void loadConfig() {

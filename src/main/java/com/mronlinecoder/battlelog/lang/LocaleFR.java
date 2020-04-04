@@ -9,6 +9,7 @@ public class LocaleFR extends BattleLocale {
         add("battle_info_true", "Vous êtes en combat pendant encore % secondes.");
         add("battle_cmd_deny", "Cette commande est désactivée en combat !");
         add("battle_punish", "Vous avez été puni pour avoir quitté le combat !");
+        add("battle_actionbar", "Mode combat : % secondes restantes");
     }
 
 }
