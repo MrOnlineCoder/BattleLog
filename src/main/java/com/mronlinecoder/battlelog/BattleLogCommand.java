@@ -1,6 +1,5 @@
 package com.mronlinecoder.battlelog;
 
-import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
@@ -18,7 +17,7 @@ public class BattleLogCommand implements CommandExecutor{
 	}
 	
 	@Override
-	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+	public CommandResult execute(CommandSource src, CommandContext args) {
 		if (!(src instanceof Player)) {
 			src.sendMessage(Text.of(TextColors.RED, "Only for players!"));
 			return CommandResult.empty();

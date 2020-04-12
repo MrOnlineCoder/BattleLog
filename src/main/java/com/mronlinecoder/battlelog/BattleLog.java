@@ -1,15 +1,11 @@
 package com.mronlinecoder.battlelog;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-
-import javax.inject.Inject;
-
+import com.mronlinecoder.battlelog.lang.BattleLocale;
+import com.mronlinecoder.battlelog.lang.LocaleEN;
+import com.mronlinecoder.battlelog.lang.LocaleFR;
+import com.mronlinecoder.battlelog.lang.LocaleRU;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.spec.CommandSpec;
@@ -28,14 +24,13 @@ import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.chat.ChatTypes;
 import org.spongepowered.api.text.format.TextColors;
 
-import com.mronlinecoder.battlelog.lang.BattleLocale;
-import com.mronlinecoder.battlelog.lang.LocaleEN;
-import com.mronlinecoder.battlelog.lang.LocaleRU;
-
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.loader.ConfigurationLoader;
+import javax.inject.Inject;
+import java.io.File;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Plugin( id = "battlelog", name = "BattleLog", version = "1.0")
 public class BattleLog {
@@ -83,7 +78,9 @@ public class BattleLog {
 			locale = new LocaleEN();
 		} else if (lang.equalsIgnoreCase("RU")) {
 			locale = new LocaleRU();
-		} else {
+		} else if(lang.equalsIgnoreCase("FR")) {
+			locale = new LocaleFR();
+		} else{
 			locale = new LocaleEN();
 		}
 	}
@@ -104,13 +101,20 @@ public class BattleLog {
 
 	public void tick() {
 		 for(Iterator<Map.Entry<String, Integer>> it = fighters.entrySet().iterator(); it.hasNext(); ) {
-			 Map.Entry<String, Integer> entry = it.next();
+		 	Map.Entry<String, Integer> entry = it.next();
 		     
-		     fighters.put(entry.getKey(), entry.getValue()-1);
-				
-		     if (entry.getValue() - 1 <= 0) {
-		    	sendOutMessage(entry.getKey());
-		    	it.remove();
+		 	fighters.put(entry.getKey(), entry.getValue()-1);
+
+		     if(config.actionbar){
+				 Optional<Player> pl = Sponge.getServer().getPlayer(entry.getKey());
+				 pl.ifPresent(player ->{
+					 player.sendMessages(ChatTypes.ACTION_BAR, Text.of(TextColors.DARK_RED, locale.tr("battle_actionbar").replace("%", String.valueOf(entry.getValue()-1))));
+				 });
+			 }
+
+		 	if (entry.getValue() - 1 <= 0) {
+				sendOutMessage(entry.getKey());
+				it.remove();
 			}
 		 }
 		
@@ -120,7 +124,11 @@ public class BattleLog {
 		Optional<Player> pl = Sponge.getServer().getPlayer(key);
 		
 		if (!pl.isPresent()) return;
-		
+
+		if(config.actionbar){
+			pl.get().sendMessage(ChatTypes.ACTION_BAR, Text.of(TextColors.DARK_RED, locale.tr("battle_end")));
+		}
+
 		pl.get().sendMessage(Text.of(TextColors.DARK_RED, "[BattleLog] ", TextColors.GRAY, locale.tr("battle_end")));
 	}
 
@@ -147,13 +155,7 @@ public class BattleLog {
 		
 		logger.info("Adding Scheduler task");
 		Task.Builder taskBuilder = Task.builder();
-		taskBuilder.execute(new Runnable() {
-			
-			@Override
-			public void run() {
-				tick();
-			}
-		}).interval(1, TimeUnit.SECONDS).delay(1, TimeUnit.SECONDS).name("BattleLog TickTask").submit(this);
+		taskBuilder.execute(this::tick).interval(1, TimeUnit.SECONDS).delay(1, TimeUnit.SECONDS).name("BattleLog TickTask").submit(this);
 
 		logger.info("! BattleLog loaded and started !");
 	}
@@ -162,21 +164,21 @@ public class BattleLog {
 		Optional<ItemStack> stack = pl.getInventory().poll();
 		while (stack.isPresent()) {
 			 Entity optItem = pl.getLocation().getExtent().createEntity(EntityTypes.ITEM, pl.getLocation().getPosition());
-			 if (optItem != null) {
-			    Item item = (Item) optItem;
-			    item.offer(Keys.REPRESENTED_ITEM, stack.get().createSnapshot());
-			    pl.getWorld().spawnEntity(item);
-			 }
-			 
-			 stack = pl.getInventory().poll();
+			Item item = (Item) optItem;
+			item.offer(Keys.REPRESENTED_ITEM, stack.get().createSnapshot());
+			pl.getWorld().spawnEntity(item);
+
+			stack = pl.getInventory().poll();
 		}
 		pl.getInventory().clear();
 
-		String cmd = config.getPunishCommand();
-		if (cmd.length() == 0) return;
-		cmd = cmd.replaceAll("%", pl.getName());
-		
-		Sponge.getCommandManager().process(Sponge.getServer().getConsole(), cmd);
+
+		config.getPunishCommand().forEach(cmd ->{
+			if (cmd.length() == 0) return;
+			cmd = cmd.replaceAll("%", pl.getName());
+			Sponge.getCommandManager().process(Sponge.getServer().getConsole(), cmd);
+		});
+
 	}
 	
 	public Logger getLogger() {

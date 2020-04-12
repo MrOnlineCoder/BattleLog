@@ -8,5 +8,6 @@ public class LocaleEN extends BattleLocale {
 		add("battle_info_true", "You will be in battle for % more sec.");
 		add("battle_cmd_deny", "Commands are disabled during the battle!");
 		add("battle_punish", "You were punished for escape from the battlefield! ");
+		add("battle_actionbar", "Battle Mode : % seconds left");
 	}
 }
