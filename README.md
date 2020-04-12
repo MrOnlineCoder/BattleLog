@@ -20,7 +20,7 @@ Install BattleLog by putting latest JAR into your server's mods folder.
 Default configuration (config/battlelog/battlelog.conf):
 
 ```
-# Plugin locale (possible values: EN, RU)
+# Plugin locale (possible values: EN, RU, FR)
 lang=RU
 # Punish command to be executed. Leave empty to disable. Use % sign as placeholder for player name
 punishCmd="tempban % 5m PVP Logout"
@@ -34,8 +34,9 @@ time=10
 
 * time - time in seconds, duration of the battle.
 
-## Author
+## Authors
 MrOnlineCoder
+Kaeios
 
 ## License
 MIT
